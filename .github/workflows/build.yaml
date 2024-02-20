@@ -1,0 +1,52 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-docker-image:
+    name: Build Docker Image
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    outputs:
+      sha: ${{ steps.build.outputs.digest }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ inputs.pnpm-version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          check-latest: true
+          node-version: ${{ inputs.node-version }}
+          cache: 'pnpm'
+
+      - name: Verify Node.js
+        shell: bash
+        run: node -v
+
+      - name: Verify pnpm
+        shell: bash
+        run: pnpm -v
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install
+
+      - name: Prepare Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push container
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: test:test
