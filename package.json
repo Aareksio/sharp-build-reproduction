@@ -2,6 +2,6 @@
   "name": "sharp-build-reproduction",
   "main": "index.js",
   "dependencies": {
-    "sharp": "0.33.2"
+    "sharp": "0.32.6"
   }
 }
