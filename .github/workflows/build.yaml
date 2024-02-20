@@ -19,13 +19,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: ${{ inputs.pnpm-version }}
+          version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.2
         with:
           check-latest: true
-          node-version: ${{ inputs.node-version }}
+          node-version: 18
           cache: 'pnpm'
 
       - name: Verify Node.js
